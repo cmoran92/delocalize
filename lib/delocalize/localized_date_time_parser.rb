@@ -14,9 +14,11 @@ module Delocalize
       '%y' => "(\\d{2})",                                     # short year
       '%e' => "(\\s\\d|\\d{2})",                              # short day
       '%d' => "(\\d{2})",                                     # full day
+      '%I' => "(\\d{1,2})",                                     # hour (12)
       '%H' => "(\\d{2})",                                     # hour (24)
       '%M' => "(\\d{2})",                                     # minute
-      '%S' => "(\\d{2})"                                      # second
+      '%S' => "(\\d{2})",                                     # second
+      '%p' => "(AM|PM)"                                       # AM/PM
     }
 
     class << self
@@ -26,7 +28,7 @@ module Delocalize
 
         translate_month_and_day_names(datetime)
         input_formats(type).each do |original_format|
-          next unless datetime =~ /^#{apply_regex(original_format)}$/
+          next unless datetime =~ /^#{apply_regex(original_format)}$/i
 
           datetime = DateTime.strptime(datetime, original_format)
           return Date == type ?
